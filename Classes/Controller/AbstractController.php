@@ -298,10 +298,14 @@ abstract class AbstractController extends ActionController
 
         // if redirect target
         if ($target) {
-            $this->uriBuilder->setTargetPageUid((int) $target);
-            $this->uriBuilder->setLinkAccessRestrictedPages(true);
-            $link = $this->uriBuilder->build();
-            $this->redirectToUri(StringUtility::removeDoubleSlashesFromUri($link));
+            if ( is_int($target) || is_numeric($target) ) {
+                $this->uriBuilder->setTargetPageUid((int)$target);
+                $this->uriBuilder->setLinkAccessRestrictedPages(true);
+                $link = $this->uriBuilder->build();
+                $this->redirectToUri(StringUtility::removeDoubleSlashesFromUri($link));
+            } else {
+                $this->redirectToUri(StringUtility::removeDoubleSlashesFromUri($target));
+            }
         }
     }
 
